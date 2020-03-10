@@ -73,13 +73,19 @@ class Memo extends Component {
     onOpen: PropTypes.func,
   };
 
+  handleClick = () => {
+    const { memo, onOpen } = this.props;
+    onOpen(memo);
+  };
+
   render() {
     //toJS로 해당 데이터를 배열로 만든다.
     const { title, body } = this.props.memo.toJS();
+    const { handleClick } = this;
 
     return (
       <Sizer>
-        <Square>
+        <Square onClick={handleClick}>
           <Contents>
             {title && <Title>{title}</Title>}
             <Body>{body}</Body>

@@ -7,6 +7,7 @@ import * as memoActions from 'modules/memo';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import MemoListContainer from './MemoListContainer';
+import MemoViewerContainer from './MemoViewerContainer';
 
 class App extends Component {
   async componentDidMount() {
@@ -38,6 +39,7 @@ class App extends Component {
           <WriteMemo />
           <MemoListContainer />
         </Layout.Main>
+        <MemoViewerContainer />
       </Layout>
     );
   }
