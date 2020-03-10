@@ -9,11 +9,26 @@ import { bindActionCreators } from 'redux';
 import MemoListContainer from './MemoListContainer';
 
 class App extends Component {
-  componentDidMount() {
+  async componentDidMount() {
     const { MemoActions } = this.props;
     // 초기 메모 로딩
-    MemoActions.getInitialMemo();
+    try {
+      await MemoActions.getInitialMemo();
+      this.getRecentMemo();
+    } catch (e) {
+      console.log(e);
+    }
   }
+
+  getRecentMemo = () => {
+    const { MemoActions, cursor } = this.props;
+    MemoActions.getRecentMemo(cursor ? cursor : 0);
+
+    // short-polling - 5초마다 새 데이터 불러오기 시도
+    setTimeout(() => {
+      this.getRecentMemo();
+    }, 1000 * 5);
+  };
 
   render() {
     return (
@@ -29,7 +44,9 @@ class App extends Component {
 }
 
 export default connect(
-  state => ({}), // 현재는 비어있는 객체를 반환합니다
+  state => ({
+    cursor: state.memo.getIn(['data', 0, 'id']),
+  }),
   dispatch => ({
     MemoActions: bindActionCreators(memoActions, dispatch),
   })
