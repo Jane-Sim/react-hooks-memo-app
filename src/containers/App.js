@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux';
 import MemoListContainer from './MemoListContainer';
 import MemoViewerContainer from './MemoViewerContainer';
 
+import Spinner from 'components/Spinner';
+
 class App extends Component {
   endCursor = 0;
 
@@ -62,12 +64,20 @@ class App extends Component {
   };
 
   render() {
+    const { pending } = this.props;
+
     return (
       <Layout>
         <Header />
         <Layout.Main>
           <WriteMemo />
           <MemoListContainer />
+          <Spinner
+            visible={
+              pending['memo/GET_INITIAL_MEMO'] ||
+              pending['memo/GET_PREVIOUS_MEMO']
+            }
+          />
         </Layout.Main>
         <MemoViewerContainer />
       </Layout>
@@ -85,6 +95,7 @@ export default connect(
       state.memo.get('data').size - 1,
       'id',
     ]),
+    pending: state.pender.pending,
   }),
   dispatch => ({
     MemoActions: bindActionCreators(memoActions, dispatch),
