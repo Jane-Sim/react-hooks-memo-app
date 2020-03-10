@@ -21,3 +21,7 @@ export const updateMemo = ({ id, memo: { title, body } }) =>
 
 // 메모를 제거한다
 export const deleteMemo = id => axios.delete(`/memo/${id}`);
+
+// 특정 id 값보다 더 적은 id를 가진 데이터들을 20개씩 불러온다.
+export const getPreviousMemo = endCursor =>
+  axios.get(`/memo/?_sort=id&_order=DESC&_limit=20&id_lte=${endCursor - 1}`); // endCursor 기준 이전 작성된 메모를 불러온다
